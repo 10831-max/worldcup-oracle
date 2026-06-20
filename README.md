@@ -1,11 +1,25 @@
 <p align="center">
-  <img src="screenshots/banner.png" alt="2026 World Cup Analyzer" width="800">
+  <img src="screenshots/home.jpg" alt="2026 World Cup Analyzer" width="800">
 </p>
 
 <h1 align="center">⚽ 2026 FIFA World Cup · Group Stage Analyzer</h1>
 
 <p align="center">
   <b>纯浏览器端计算 · 零依赖 · 离线可用 · 开源免费</b>
+</p>
+
+> <br>
+> **「十二组争锋，八席待定；绿茵之外，数学亦有答案。」**<br>
+> <br>
+> 2026年，FIFA世界杯史上首次迎来48支劲旅。全新的赛制之下，<br>
+> 12个小组的第三名将展开一场无声的跨组较量——仅8支球队能够突围。<br>
+> 一支球队的命运，从此不再只由自己书写，更系于其他赛场的风云变幻。<br>
+> <br>
+> 传统的直觉与分析已不足以解答这前所未有的复杂性。<br>
+> 于是，我们选择用数学的力量——穷举每一种可能的未来，<br>
+> 计算出每一个概率背后，那条通往晋级的隐秘路径。<br>
+> <br>
+> *—— 一个热爱足球、痴迷计算的灵魂，献给这届独一无二的世界杯。* ⚽</p>
 </p>
 
 <p align="center">
@@ -28,13 +42,17 @@
 
 ## 📸 界面预览
 
-| 首页 - 积分榜 | 球队详情页 |
+| 🇲🇽 A组积分榜 | 🇦🇷 J组积分榜 |
 |:---:|:---:|
-| ![首页](screenshots/home.png) | ![球队页](screenshots/team.png) |
+| ![A组](screenshots/home.jpg) | ![J组](screenshots/home-j.jpg) |
 
-| 比分编辑 | 出线路径分析 |
+| 🇦🇷 阿根廷详情页 | 🇦🇷 阿根廷出线路径 |
 |:---:|:---:|
-| ![比分](screenshots/score.png) | ![路径](screenshots/paths.png) |
+| ![阿根廷](screenshots/team.jpg) | ![路径](screenshots/paths.jpg) |
+
+| 🇧🇷 巴西出线路径（复杂情况） |
+|:---:|
+| ![巴西](screenshots/paths-brazil.jpg) |
 
 ---
 
