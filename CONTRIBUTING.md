@@ -14,7 +14,7 @@ Use the Feature Request template to propose new ideas.
 
 ### Code Contributions
 ```bash
-git clone https://github.com/guo-yinzhuo/worldcup-oracle.git
+git clone https://github.com/10831-max/worldcup-oracle.git
 cd worldcup-oracle
 git checkout -b feature/my-awesome-feature
 # Make changes (ensure file:// protocol compatibility)

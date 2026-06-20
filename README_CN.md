@@ -24,9 +24,9 @@
 
 <p align="center">
   <a href="https://yzfootball.vercel.app"><img src="https://img.shields.io/badge/Live_Demo-Vercel-000000?style=for-the-badge&logo=vercel" alt="Vercel"></a>
-  <a href="https://gitee.com/guo-yinzhuo/worldcup-oracle"><img src="https://img.shields.io/badge/Mirror-Gitee-C71D23?style=for-the-badge&logo=gitee" alt="Gitee"></a>
-  <a href="https://github.com/guo-yinzhuo/worldcup-oracle/blob/main/LICENSE"><img src="https://img.shields.io/github/license/guo-yinzhuo/worldcup-oracle?style=for-the-badge" alt="License"></a>
-  <a href="https://github.com/guo-yinzhuo/worldcup-oracle/stargazers"><img src="https://img.shields.io/github/stars/guo-yinzhuo/worldcup-oracle?style=for-the-badge" alt="Stars"></a>
+  <a href="https://gitee.com/10831-max/worldcup-oracle"><img src="https://img.shields.io/badge/Mirror-Gitee-C71D23?style=for-the-badge&logo=gitee" alt="Gitee"></a>
+  <a href="https://github.com/10831-max/worldcup-oracle/blob/main/LICENSE"><img src="https://img.shields.io/github/license/10831-max/worldcup-oracle?style=for-the-badge" alt="License"></a>
+  <a href="https://github.com/10831-max/worldcup-oracle/stargazers"><img src="https://img.shields.io/github/stars/10831-max/worldcup-oracle?style=for-the-badge" alt="Stars"></a>
 </p>
 
 <p align="center">
@@ -250,11 +250,11 @@ img/teams/ESP.jpg  ← 西班牙
 ## 🚀 One-Click Deploy
 
 <p align="center">
-  <a href="https://vercel.com/new/clone?repository-url=https://github.com/guo-yinzhuo/worldcup-oracle">
+  <a href="https://vercel.com/new/clone?repository-url=https://github.com/10831-max/worldcup-oracle">
     <img src="https://vercel.com/button" alt="Deploy with Vercel" height="40">
   </a>
   &nbsp;&nbsp;
-  <a href="https://app.netlify.com/start/deploy?repository=https://github.com/guo-yinzhuo/worldcup-oracle">
+  <a href="https://app.netlify.com/start/deploy?repository=https://github.com/10831-max/worldcup-oracle">
     <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" height="40">
   </a>
 </p>
@@ -264,8 +264,8 @@ img/teams/ESP.jpg  ← 西班牙
 ## ⭐ Star History
 
 <p align="center">
-  <a href="https://star-history.com/#guo-yinzhuo/worldcup-oracle&Date">
-    <img src="https://api.star-history.com/svg?repos=guo-yinzhuo/worldcup-oracle&type=Date" alt="Star History Chart" width="600">
+  <a href="https://star-history.com/#10831-max/worldcup-oracle&Date">
+    <img src="https://api.star-history.com/svg?repos=10831-max/worldcup-oracle&type=Date" alt="Star History Chart" width="600">
   </a>
 </p>
 
@@ -274,7 +274,7 @@ img/teams/ESP.jpg  ← 西班牙
 ---
 
 <p align="center">
-  <sub>Made with ❤️ by <a href="https://github.com/guo-yinzhuo"><b>_YinZhuo</b></a></sub>
+  <sub>Made with ❤️ by <a href="https://github.com/10831-max"><b>_YinZhuo</b></a></sub>
   <br>
   <sub>2026 FIFA World Cup Group Stage Analyzer · MIT License</sub>
 </p>
