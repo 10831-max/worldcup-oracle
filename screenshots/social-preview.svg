@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <rect width="1280" height="640" fill="#0a0c14"/>
+  <text x="640" y="180" text-anchor="middle" font-size="80" fill="#D4AF37" font-family="sans-serif" font-weight="bold">⚽ 2026 World Cup</text>
+  <text x="640" y="280" text-anchor="middle" font-size="50" fill="#e8eaf0" font-family="sans-serif">Group Stage Analyzer</text>
+  <text x="640" y="400" text-anchor="middle" font-size="28" fill="#a0a7bf" font-family="sans-serif">Pure Browser · Zero Dependencies · Open Source</text>
+  <text x="640" y="520" text-anchor="middle" font-size="22" fill="#6b7290" font-family="sans-serif">github.com/guo-yinzhuo/worldcup-oracle</text>
+</svg>
