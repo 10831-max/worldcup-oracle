@@ -26,3 +26,5 @@ docs/文件说明文档.docx
 # Images (keep uploaded photos small)
 img/teams/*.png
 
+.claude/
+*.txt

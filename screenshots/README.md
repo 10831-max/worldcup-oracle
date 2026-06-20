@@ -1,17 +1,12 @@
-# 📸 截图说明
+# Screenshots
 
-请将以下截图放到此文件夹：
+Place screenshots in this folder for the README.
 
-| 文件名 | 内容 | 建议尺寸 |
-|--------|------|---------|
-| `banner.png` | 项目横幅，用于 README 顶部 | 1200×600 |
-| `home.png` | 首页积分榜界面 | 1200×800 |
-| `team.png` | 球队详情页 | 1200×800 |
-| `score.png` | 比分编辑弹窗 | 600×400 |
-| `paths.png` | 出线路径分析 | 600×500 |
-
-## 📷 截图建议
-- 使用 Chrome DevTools 截取 (F12 → Ctrl+Shift+P → "Capture screenshot")
-- 选择具有代表性的球队（如巴西、阿根廷、西班牙）
-- 确保页面数据已加载完成
-- PNG 格式，不超过 500KB/张
+| File | Content | Suggested Size |
+|------|---------|---------------|
+| `home.jpg` | Group standings page | 1200x800 |
+| `home-j.jpg` | Group J standings | 1200x800 |
+| `team.jpg` | Team detail page | 1200x800 |
+| `paths.jpg` | Qualification paths | 600x500 |
+| `paths-brazil.jpg` | Brazil paths (complex) | 600x500 |
+| `social-preview.svg` | Social media preview | 1280x640 |
