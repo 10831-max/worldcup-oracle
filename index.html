@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚽ 2026 世界杯小组赛出线分析</title>
+  <meta name="description" content="2026年FIFA世界杯小组赛出线形势实时分析工具 - 纯浏览器端计算，无需后端">
+  <link rel="stylesheet" href="css/style.css?v=20260623">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="header-logo">
+        <span class="logo-icon">⚽</span>
+        <span>2026 世界杯 · 小组赛出线分析</span>
+      </div>
+      <div class="header-actions">
+        <span class="api-status" id="api-status" title="数据来源状态">📡 初始化...</span>
+        <button class="btn" id="btn-export" title="导出比分数据">📤 导出</button>
+        <button class="btn" id="btn-import" title="导入比分数据">📥 导入</button>
+        <input type="file" id="import-file-input" accept=".json" style="display:none">
+        <button class="btn btn-danger" id="btn-reset-all" title="清除所有比分">🔄 重置</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Group Navigation ===== -->
+  <div class="group-nav-container">
+    <nav class="group-nav" id="group-nav"></nav>
+  </div>
+
+  <!-- ===== Main Content ===== -->
+  <main class="main-content">
+    <!-- Standings -->
+    <section class="standings-section">
+      <div class="section-title">
+        <span>📊</span> 积分榜 · <span id="current-group-label">A 组</span>
+      </div>
+      <div id="standings-container">
+        <div class="empty-state">加载中...</div>
+      </div>
+    </section>
+
+    <!-- Side Panel -->
+    <aside class="side-panel">
+      <!-- Matches -->
+      <section class="matches-section">
+        <div class="section-title">
+          <span>📅</span> 比赛日程
+        </div>
+        <div id="matches-container">
+          <div class="empty-state">加载中...</div>
+        </div>
+      </section>
+
+      <!-- Summary -->
+      <section class="summary-section">
+        <div class="section-title">
+          <span>📈</span> 形势概览
+        </div>
+        <div id="summary-container">
+          <div class="empty-state">加载中...</div>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <!-- Keyboard Hints -->
+  <div class="keyboard-hints">
+    <span>快捷键：</span>
+    <span class="key-hint">← →</span> 切换小组
+    <span class="key-hint">A-L</span> 直接跳转
+    <span class="key-hint">Esc</span> 关闭弹窗
+    <span class="key-hint">R</span> 刷新计算
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    纯浏览器端计算 · 零API依赖 · 离线可用 · 2026 FIFA World Cup Group Stage Analyzer
+    <span style="margin-left:6px;opacity:0.45;font-size:0.7rem;">by <strong>_YinZhuo</strong></span>
+  </footer>
+
+  <!-- ===== Edit Score Modal ===== -->
+  <div class="modal-overlay" id="edit-modal">
+    <div class="modal">
+      <div class="modal-header">✏️ 更新比分</div>
+      <div class="modal-body">
+        <input type="hidden" id="modal-match-id">
+        <div class="score-input-row">
+          <div class="score-team">
+            <div class="score-team-flag" id="modal-home-flag"></div>
+            <div class="score-team-name" id="modal-home-name"></div>
+          </div>
+          <input type="number" class="score-input" id="modal-home-score" min="0" max="9" placeholder="0" inputmode="numeric">
+          <span class="score-vs">:</span>
+          <input type="number" class="score-input" id="modal-away-score" min="0" max="9" placeholder="0" inputmode="numeric">
+          <div class="score-team">
+            <div class="score-team-flag" id="modal-away-flag"></div>
+            <div class="score-team-name" id="modal-away-name"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" id="btn-clear-score">清除比分</button>
+        <button class="btn" id="btn-cancel-score">取消</button>
+        <button class="btn btn-primary" id="btn-save-score">💾 保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Team Detail Modal ===== -->
+  <div class="modal-overlay" id="detail-modal">
+    <div class="modal detail-modal">
+      <div class="detail-header">
+        <span class="detail-team-name" id="detail-team-name"></span>
+        <div id="detail-status"></div>
+      </div>
+      <div class="detail-body">
+        <div class="detail-stats">
+          <div class="detail-stat" style="grid-column:1/-1">
+            <div class="detail-stat-value" id="detail-total-rate">-</div>
+            <div class="detail-stat-label">总出线概率</div>
+          </div>
+          <div class="detail-stat">
+            <div class="detail-stat-value" id="detail-direct-rate">-</div>
+            <div class="detail-stat-label">直接出线（前二）</div>
+          </div>
+          <div class="detail-stat">
+            <div class="detail-stat-value" id="detail-third-rate">-</div>
+            <div class="detail-stat-label">获得第三名</div>
+          </div>
+          <div class="detail-stat">
+            <div class="detail-stat-value" id="detail-first-rate">-</div>
+            <div class="detail-stat-label">小组第一</div>
+          </div>
+          <div class="detail-stat">
+            <div class="detail-stat-value" id="detail-second-rate">-</div>
+            <div class="detail-stat-label">小组第二</div>
+          </div>
+          <div class="detail-stat">
+            <div class="detail-stat-value" id="detail-avg-pts">-</div>
+            <div class="detail-stat-label">预期平均积分</div>
+          </div>
+          <div class="detail-stat" id="detail-third-row">
+            <div class="detail-stat-value" id="detail-third-estimate">-</div>
+            <div class="detail-stat-label">第三名晋级估算</div>
+          </div>
+          <div class="detail-stat">
+            <div class="detail-stat-value" id="detail-scenarios">-</div>
+            <div class="detail-stat-label">穷举场景总数</div>
+          </div>
+        </div>
+        <div class="detail-easter-egg" id="detail-easter-egg"></div>
+        <div class="detail-conditions" id="detail-conditions">
+          <div class="detail-conditions-title">📋 出线条件分析</div>
+          <div id="detail-conditions-body"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="btn-close-detail">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Team Detail Page (hidden by default) ===== -->
+  <div class="team-page" id="team-page" style="display:none">
+    <div class="tp-header">
+      <button class="btn tp-back-btn" onclick="backToGroup()">← 返回小组</button>
+      <div class="tp-team-title">
+        <span class="tp-flag" id="tp-flag"></span>
+        <span class="tp-name" id="tp-name"></span>
+        <span class="tp-nickname" id="tp-nickname"></span>
+      </div>
+      <div class="tp-group-badge" id="tp-group-badge"></div>
+    </div>
+    <!-- Hero Banner -->
+    <div class="tp-hero">
+      <div class="tp-hero-flag" id="tp-hero-flag"></div>
+      <div class="tp-hero-overlay">
+        <div class="tp-hero-location" id="tp-hero-location"></div>
+      </div>
+    </div>
+    <div class="tp-content">
+      <!-- 球队资料 -->
+      <section class="tp-card tp-profile">
+        <div class="tp-card-title">📖 球队档案</div>
+        <div class="tp-profile-grid">
+          <div class="tp-profile-item"><span class="tp-label">FIFA排名</span><span class="tp-value" id="tp-rank">-</span></div>
+          <div class="tp-profile-item"><span class="tp-label">所属区域</span><span class="tp-value" id="tp-conf">-</span></div>
+          <div class="tp-profile-item tp-profile-full"><span class="tp-label">球队简介</span><span class="tp-value" id="tp-desc">-</span></div>
+          <div class="tp-profile-item tp-profile-full"><span class="tp-label">世界杯历史</span><span class="tp-value" id="tp-history">-</span></div>
+          <div class="tp-profile-item tp-profile-full"><span class="tp-label">核心球员</span><span class="tp-value" id="tp-stars">-</span></div>
+        </div>
+      </section>
+      <!-- 趣梗专区 -->
+      <section class="tp-card tp-meme">
+        <div class="tp-card-title">😂 世界杯趣梗</div>
+        <div class="tp-meme-body" id="tp-meme"></div>
+      </section>
+      <!-- 当前状态 -->
+      <section class="tp-card tp-status">
+        <div class="tp-card-title">📊 当前形势</div>
+        <div id="tp-status-body"></div>
+      </section>
+      <!-- 出线路径 -->
+      <section class="tp-card tp-paths">
+        <div class="tp-card-title">🎯 出线路径分析</div>
+        <p class="tp-paths-summary" id="tp-paths-summary"></p>
+        <div id="tp-paths-body"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ===== Scripts ===== -->
+  <script src="js/data.js?v=20260623"></script>
+  <script src="js/colorSystem.js?v=20260623"></script>
+  <script src="js/rules.js?v=20260623"></script>
+  <script src="js/engine.js?v=20260623"></script>
+  <script src="js/renderer.js?v=20260623"></script>
+  <script src="js/api.js?v=20260623"></script>
+  <script src="js/main.js?v=20260623"></script>
+</body>
+</html>

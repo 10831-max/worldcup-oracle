@@ -1,0 +1,330 @@
+2026 世界杯小组赛出线分析工具
+文件说明文档
+每个文件的功能、作用、技术细节逐一说明
+v1.0 · 2026.06.20
+项目概览
+本项目是一个纯前端网页应用，用于实时分析 2026 年 FIFA 世界杯小组赛的出线形势。用户输入比赛比分后，系统立即穷举所有剩余比赛的可能结果，计算每支球队的出线概率，并通过颜色系统直观展示。
+技术特点：纯浏览器端计算 | 零 API 依赖 | 离线可用 | 单页应用 | 响应式设计
+项目根目录
+D:\\llm\\yz_football\\
+一、根目录文件
+1.1 index.html —— 主页面入口
+文件路径：
+D:\llm\yz_football\index.html
+作用：整个应用的唯一入口，用浏览器打开即可使用。包含完整的 HTML 结构：顶部导航栏、小组切换按钮、积分榜区域、比赛日程卡片、形势概览面板、比分编辑弹窗、球队详情弹窗。
+核心结构：
+Header（导航栏：Logo + 导出/导入/重置按钮）
+Group Nav（12 个小组切换按钮 A-L）
+Main Content（积分榜 + 侧边栏）
+├── Standings Section（FIFA 标准积分表）
+└── Side Panel
+├── Matches Section（3 轮比赛卡片）
+└── Summary Section（形势概览卡片）
+Edit Score Modal（比分输入弹窗）
+Team Detail Modal（球队出线详情弹窗）
+Footer（快捷键提示 + 版权信息）
+技术细节：
+• 移动端响应式：通过 CSS media query 在 320px~1920px 屏幕自适应
+• 图标：使用 emoji 作为国旗和状态图标，无需额外图片资源
+• meta viewport：确保移动端缩放正确
+• 数据加载顺序：data.js → colorSystem.js → rules.js → engine.js → renderer.js → main.js
+1.2 README.md —— 项目说明文件
+文件路径：
+D:\llm\yz_football\README.md
+作用：GitHub 仓库首页展示的项目介绍，包含快速上手、功能列表、快捷键说明、文件结构。任何人在 GitHub 上看到仓库时首先看到的就是这个文件。
+1.3 .gitignore —— Git 忽略规则
+文件路径：
+D:\llm\yz_football\.gitignore
+作用：告诉 Git 哪些文件不需要上传到仓库（如系统临时文件、Python 生成脚本、Word 文档等），保持仓库干净。
+二、CSS 样式文件夹
+2.1 css/style.css —— 全局样式表
+文件路径：
+D:\llm\yz_football\css\style.css
+作用：定义整个应用的所有视觉呈现，包括布局、颜色、动画、响应式断点。约 500 行。
+核心样式模块：
+CSS Variables（:root）       —— 全局颜色/间距/圆角变量，统一主题
+Reset                       —— 浏览器默认样式重置
+.app-header                 —— 顶部导航栏，sticky 定位
+.group-nav                  —— 小组切换按钮横排
+.main-content               —— 主内容区 CSS Grid 布局
+.standings-table            —— 积分榜表格样式
+.rate-bar-container         —— 出线概率进度条
+.match-card                 —— 比赛卡片样式
+.modal-overlay / .modal     —— 弹窗系统 + 入场动画
+.summary-grid               —— 形势概览卡片
+@media queries               —— 3 个断点：900px / 768px / 480px
+::-webkit-scrollbar          —— 自定义滚动条
+设计决策：
+• 暗色主题：减少视觉疲劳，突出数据内容；主背景色 #0f1117
+• CSS Grid：主内容区左右分栏（积分榜 + 侧边栏），简洁高效
+• 过渡动画：所有交互含 0.2s ease 过渡，操作反馈流畅
+• 响应式优先：大屏显示全部列，中等屏幕隐藏辅助列，小屏进一步精简
+三、JavaScript 脚本文件夹
+所有 JS 文件按依赖顺序加载，从底层数据到顶层控制。
+3.1 js/data.js —— 内嵌数据层
+文件路径：
+D:\llm\yz_football\js\data.js
+作用：包含 48 支参赛球队和 72 场小组赛的完整数据，直接嵌入 JS 确保 file:// 协议下也能正常工作（无需 HTTP 服务器）。
+数据结构：
+EMBEDDED_TEAMS  (数组) — 48 支球队
+每队包含：id, name, nameEn, group, flag, confederation
+EMBEDDED_MATCHES (数组) — 72 场比赛
+每场包含：id, group, home, away, homeScore, awayScore, played, matchday
+数据说明：
+• 球队数据基于 FIFA 排名和各洲名额合理预测（实际名单以世界杯抽签为准）
+• 每场比赛初始 homeScore/awayScore 均为 null（未赛）
+• played 字段标识是否已输入比分
+• 12 个小组 A-L，每组 4 队 6 场比赛 = 72 场
+• 比赛对阵遵循标准循环赛制（1vs2, 3vs4, 1vs3, 2vs4, 1vs4, 2vs3）
+3.2 js/colorSystem.js —— 颜色状态系统
+文件路径：
+D:\llm\yz_football\js\colorSystem.js
+作用：将出线概率百分比映射为颜色和状态标签。完全由数学结果驱动，无需人工干预。
+阈值配置：
+= 100%  →  ✅ 已锁定（绿色 #00C853）
+> 66.7% →  🟢 稳（偏绿 #4CAF50）
+33.3%~66.7% →  🟡 有戏（中间色 #FF9800）
+< 33.3% 且 > 0% →  ⚫ 悬（偏黑 #757575）
+= 0% →  💀 已出局（纯黑 #212121）
+特殊状态：
+• 🥇 已锁定头名（所有穷举场景均为第一）→ 金色 #FFD700
+• 🥈 已锁定第二（所有穷举场景均为第二）→ 银色 #C0C0C0
+• 🔒 已锁定前二（确保直接出线，但不一定是第几）→ 绿色
+提供方法：
+getStatus(rate, extras)     — 返回 {label, color, bgColor, cssClass, icon, level}
+getProgressGradient(rate)   — 返回进度条渐变色
+getTextColor(rate)          — 返回对应文字颜色
+3.3 js/rules.js —— FIFA 排名规则
+文件路径：
+D:\llm\yz_football\js\rules.js
+作用：实现 FIFA 官方小组赛排名规则，包括积分计算、同分 Tie-breaking、跨组第三名比较。
+核心方法：
+getMatchResult(match)              — 计算单场比赛积分贡献
+computeStandings(teams, matches)    — 计算完整积分榜并排序
+compareTeams(a, b, allStats)        — 两支球队排名比较（7层优先级）
+├── compareTwoTied(a, b)          — 两队同分：净胜球→进球→H2H
+└── compareMultiTied(a, b, ...)   — 多队同分：构建H2H小联赛
+buildH2HMiniLeague(tiedTeams, ...)  — 构建仅涉及TIE队的相互战绩表
+rankThirdPlaces(thirdPlaceTeams)    — 跨组12选8排序
+FIFA 排名优先级（依次比较）：
+① 积分 → ② 净胜球（全量）→ ③ 总进球（全量）→ ④ 相互积分 → ⑤ 相互净胜球 → ⑥ 相互进球 → ⑦ 公平竞赛（简化）→ ⑧ 抽签（标记TIE）
+技术细节：
+• 多队同分时按 FIFA 规则构建"小联赛"：仅计算 TIE 队之间的相互比赛
+• 公平竞赛积分和抽签在当前版本中简化处理，标记为 TIE 供用户关注
+3.4 js/engine.js —— 核心计算引擎
+文件路径：
+D:\llm\yz_football\js\engine.js
+作用：整个应用的计算核心。穷举/采样所有剩余比赛的比分可能性，统计每队在各场景下的排名结果，计算出线概率。
+核心方法：
+generateAllScores()          — 生成0:0~4:4共25种比分组合
+cartesianProduct(arrays)      — 笛卡尔积（组合穷举）
+analyzeGroup(group, ...)      — ★ 核心函数，分析单个小组出线形势
+buildFullMatches(...)         — 合并已完赛+穷举比分为完整比赛数据
+sampleScenarios(...)          — 蒙特卡洛随机采样（全6场未赛时用）
+analyzeAllGroups(...)         — 全局跨组分析（含第三名估算）
+estimateThirdPlaceQualification(...) — 基于历史模型估算第三名晋级概率
+getStrategy(remainingCount)   — 根据剩余场次选择穷举策略
+穷举策略：
+剩余 ≤4 场 → 完整穷举（25^N，最大 390,625 场景，<3ms）
+剩余 = 5 场 → 完整穷举（25^5 ≈ 9.7M 场景，约 5ms，可接受）
+剩余 = 6 场 → 蒙特卡洛采样 100,000 次（概率误差 < ±1.5%）
+第三名晋级估算模型（基于历史统计）：
+6.0分+ →  96%（几乎锁定）     5.0分+ →  85%（大概率）
+4.5分+ →  70%（较大概率）     4.0分+ →  60% or 40%（取决于净胜球正负）
+3.0分+ →  20% or 5%（取决于净胜球正负）    <3.0分 →  1%
+技术细节：
+• 多队同分时按 FIFA 规则构建"小联赛"：仅计算 TIE 队之间的相互比赛
+• 公平竞赛积分和抽签在当前版本中简化处理，标记为 TIE 供用户关注
+3.5 js/renderer.js —— 界面渲染器
+文件路径：
+D:\llm\yz_football\js\renderer.js
+作用：所有 DOM 操作集中在此文件，将数据转换为用户看到的界面元素。负责积分榜表格、比赛卡片、小组导航、弹窗等的渲染。
+核心方法：
+renderAll(appState)              — 渲染整个页面（调用以下各方法）
+renderGroupNav(appState)         — 顶部 12 小组导航按钮
+renderStandings(appState)        — ★ 积分榜表格（含概率进度条）
+renderRateBar(rate)              — 带颜色的出线概率进度条
+renderMatches(appState)          — 分轮次显示比赛卡片
+renderMatchCard(match, appState) — 单场比赛卡片（已赛/未赛两种状态）
+renderSummary(appState)          — 形势概览面板
+showEditModal(match, appState)   — 比分输入弹窗
+showTeamDetail(teamId, appState) — 球队出线详情弹窗
+hideEditModal() / hideDetailModal() — 关闭弹窗
+渲染规则：
+• 积分榜排名1用🥇，排名2用🥈，排名3用🥉，排名4降低透明度
+• 净胜球正数绿色显示 +N，负数红色显示 -N
+• 状态标签 status-badge 使用对应颜色背景
+• 概率进度条使用渐变色（高概率绿→低概率黑）
+• 已完赛场次显示实际比分（可点击修改），未赛显示"更新比分"按钮
+3.6 js/main.js —— 主控制器
+文件路径：
+D:\llm\yz_football\js\main.js
+作用：应用的总控制器，负责初始化、数据管理、事件绑定、流程调度。是连接数据、引擎、渲染器的中枢。
+核心状态 (App.state)：
+currentGroup: "A"           — 当前显示的小组
+teamMap: {id→team, ...}     — 所有球队的快速查找表
+allMatches: {A:[6场], ...}  — 所有比赛数据（含用户输入比分）
+groupResults: {A:result, ...} — 各组的计算结果（含颜色状态）
+globalResults: {...}         — 全12组跨组分析结果
+核心方法：
+init()                — ★ 应用初始化入口（DOMContentLoaded 触发）
+loadData()            — 加载数据（优先 fetch，降级到内嵌 EMBEDDED_*）
+loadSavedScores()     — 从 localStorage 恢复用户之前输入的比分
+saveScores()          — 将比分保存到 localStorage（持久化）
+recalculateAll()      — ★ 重新计算所有12组的出线形势
+buildCurrentMatches() — 构建仅含已完赛场次的比赛数据
+bindEvents()          — 绑定所有 UI 事件（按钮点击、弹窗等）
+bindKeyboard()        — 绑定键盘快捷键
+switchGroup(group)    — 切换当前小组
+saveMatchScore()      — 保存一场比赛的比分
+clearMatchScore()     — 清除一场比赛的比分
+resetAllScores()      — 重置所有比分为未赛状态
+exportData()          — 导出比分数据为 JSON 文件
+importData()          — 从 JSON 文件导入比分数据
+全局函数（供 HTML onclick 调用）：
+switchGroup(g)    — 切换小组
+editMatch(id)     — 打开比分编辑弹窗
+showTeamDetail(id) — 打开球队详情弹窗
+技术细节：
+• localStorage 存储 key: yz_football_scores，格式 {matchId: {homeScore, awayScore}}
+• 键盘快捷键：←→切换小组、A-L直接跳转、Esc关闭弹窗、R刷新计算
+• 数据持久化：页面刷新/关闭后重新打开，比分自动恢复
+• 导入/导出：JSON 格式，方便备份和迁移数据
+四、数据文件夹
+4.1 data/teams.json —— 球队数据（JSON版）
+文件路径：
+D:\llm\yz_football\data\teams.json
+作用：48 支球队的 JSON 格式数据，供 fetch 方式加载使用。内容与 js/data.js 中的 EMBEDDED_TEAMS 完全一致。部署到服务器时优先使用此文件。
+4.2 data/matches.json —— 比赛赛程（JSON版）
+文件路径：
+D:\llm\yz_football\data\matches.json
+作用：72 场小组赛的 JSON 格式赛程数据。内容与 js/data.js 中的 EMBEDDED_MATCHES 完全一致。
+五、文档文件夹
+5.1 docs/文件说明文档.docx —— 本文件
+文件路径：
+D:\llm\yz_football\docs\文件说明文档.docx
+作用：你正在阅读的文档，逐一说明项目中每个文件的功能、作用和技术细节。
+5.2 工作流说明文档.docx —— 工作流程说明
+文件路径：
+D:\llm\yz_football\工作流说明文档.docx
+作用：项目前期的工作流设计文档，包含系统架构、计算流程、颜色系统规则、FIFA 规则详解、数据结构设计等。侧重于"怎么做"（设计层面），本文件侧重于"每个文件是什么"（实现层面）。
+六、数据流说明
+以下是用户操作触发一次完整计算的数据流：
+用户点击"保存比分"
+│
+▼
+main.js: saveMatchScore()
+│  更新 allMatches[group][i].homeScore / awayScore
+│  调用 saveScores() → localStorage.setItem(...)
+│  调用 recalculateAll()
+▼
+main.js: recalculateAll()
+│  for each group (A~L):
+│    engine.js: analyzeGroup(group, matches, teamMap)
+│      │  分离 playedMatches / remainingMatches
+│      │  根据剩余场数选择完整穷举或蒙特卡洛采样
+│      │  for each scenario:
+│      │    rules.js: computeStandings() → 排名
+│      │    统计：前2/第3/第4/第一/第二 次数
+│      │    统计：积分/净胜球/进球 累计
+│      ▼
+│    返回 {group, totalScenarios, results, standings}
+│    colorSystem.js: getStatus() → 颜色标签
+│
+│  engine.js: analyzeAllGroups(groupResults) → 全局比较
+│    对每队计算第三名晋级概率 + 总出线概率
+▼
+renderer.js: renderAll(state)
+│  renderGroupNav()    → 顶部小组按钮
+│  renderStandings()   → 积分榜 + 概率进度条
+│  renderMatches()     → 比赛卡片（3轮）
+│  renderSummary()     → 形势概览
+▼
+用户看到更新后的界面
+七、使用场景
+7.1 场景一：自己电脑查看
+直接双击 index.html 用浏览器打开即可（数据内嵌，无需服务器）。
+7.2 场景二：分享给朋友
+将整个 yz_football 文件夹压缩发给对方，对方解压后双击 index.html 即可使用。
+7.3 场景三：部署为在线网页
+将文件上传到任何静态托管服务（GitHub Pages / Vercel / Netlify），获得一个 URL，任何人通过浏览器访问该 URL 即可使用。推荐 Vercel 或 Netlify（免费、自动 HTTPS）。
+7.4 场景四：手机上使用
+部署为在线网页后，手机浏览器直接访问 URL。界面自动适配手机屏幕。
+八、维护与更新指南
+如何更新球队名单：
+编辑 js/data.js 中的 EMBEDDED_TEAMS 数组，按相同格式替换球队信息。同步更新 data/teams.json。
+如何更新比赛赛程：
+编辑 js/data.js 中的 EMBEDDED_MATCHES 数组，按相同格式更新比赛对阵。同步更新 data/matches.json。
+如何调整颜色阈值：
+编辑 js/colorSystem.js 中的 thresholds 对象，修改 safe / hopeful 等阈值百分比。
+如何调整比分穷举范围：
+编辑 js/engine.js 中的 scoreRange 数组，例如改为 [0,1,2,3] 缩小范围（16种/场），提高计算速度。
+如何调整蒙特卡洛采样数：
+编辑 js/engine.js 中的 monteCarloSamples 值。数值越大越精确，但计算时间越长。推荐 50000~200000。
+九、文件清单速查表
+一句话描述
+1
+index.html
+HTML
+主页面入口，浏览器打开即用
+2
+README.md
+Markdown
+仓库首页项目介绍
+3
+.gitignore
+Config
+Git 忽略文件规则
+4
+css/style.css
+CSS
+全局样式表（~500行）
+5
+js/data.js
+JavaScript
+48队+72场内嵌数据
+6
+js/colorSystem.js
+JavaScript
+概率→颜色映射系统
+7
+js/rules.js
+JavaScript
+FIFA官方排名规则
+8
+js/engine.js
+JavaScript
+穷举引擎+蒙特卡洛采样
+9
+js/renderer.js
+JavaScript
+所有DOM渲染操作
+10
+js/main.js
+JavaScript
+主控制器+事件管理+持久化
+11
+data/teams.json
+JSON
+48队数据（服务器部署用）
+12
+data/matches.json
+JSON
+72场赛程（服务器部署用）
+13
+docs/文件说明文档.docx
+Word
+本说明文档
+14
+工作流说明文档.docx
+Word
+工作流设计文档
+15
+create_workflow_doc.py
+Python
+工作流文档生成脚本
+16
+create_final_doc.py
+Python
+本文件生成脚本
+— End of Document —

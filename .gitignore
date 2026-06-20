@@ -1,0 +1,28 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temp
+*.tmp
+*.log
+*.pyc
+__pycache__/
+
+# IDE
+.vscode/
+.idea/
+
+# Docs (generated)
+create_workflow_doc.py
+create_final_doc.py
+工作流说明文档.docx
+docs/文件说明文档.docx
+
+# Deploy
+.vercel
+.netlify
+
+# Images (keep uploaded photos small)
+img/teams/*.png
+
