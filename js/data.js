@@ -1,7 +1,7 @@
 /**
  * 内嵌数据层 - 2026世界杯 48支球队 + 72场比赛 + 实际赛果
  * 数据来源：FIFA官方抽签结果（2025年12月）+ 实际比赛结果
- * 最后更新：2026-06-20
+ * 最后更新：2026-06-21
  */
 
 const EMBEDDED_TEAMS = [
@@ -116,9 +116,9 @@ const EMBEDDED_MATCHES = [
   // 第1轮 - 6月14日
   {"id":"E1","group":"E","home":"GER","away":"CUW","homeScore":7,"awayScore":1,"played":true,"matchday":1},
   {"id":"E2","group":"E","home":"CIV","away":"ECU","homeScore":1,"awayScore":0,"played":true,"matchday":1},
-  // 第2轮 - 6月20日（今天，待更新）
-  {"id":"E3","group":"E","home":"GER","away":"CIV","homeScore":null,"awayScore":null,"played":false,"matchday":2},
-  {"id":"E4","group":"E","home":"ECU","away":"CUW","homeScore":null,"awayScore":null,"played":false,"matchday":2},
+  // 第2轮 - 6月20日
+  {"id":"E3","group":"E","home":"GER","away":"CIV","homeScore":2,"awayScore":1,"played":true,"matchday":2},
+  {"id":"E4","group":"E","home":"ECU","away":"CUW","homeScore":0,"awayScore":0,"played":true,"matchday":2},
   // 第3轮 - 6月25日
   {"id":"E5","group":"E","home":"ECU","away":"GER","homeScore":null,"awayScore":null,"played":false,"matchday":3},
   {"id":"E6","group":"E","home":"CUW","away":"CIV","homeScore":null,"awayScore":null,"played":false,"matchday":3},
@@ -127,9 +127,9 @@ const EMBEDDED_MATCHES = [
   // 第1轮 - 6月14日
   {"id":"F1","group":"F","home":"NED","away":"JPN","homeScore":2,"awayScore":2,"played":true,"matchday":1},
   {"id":"F2","group":"F","home":"SWE","away":"TUN","homeScore":5,"awayScore":1,"played":true,"matchday":1},
-  // 第2轮 - 6月20日（今天，待更新）
-  {"id":"F3","group":"F","home":"NED","away":"SWE","homeScore":null,"awayScore":null,"played":false,"matchday":2},
-  {"id":"F4","group":"F","home":"TUN","away":"JPN","homeScore":null,"awayScore":null,"played":false,"matchday":2},
+  // 第2轮 - 6月20日
+  {"id":"F3","group":"F","home":"NED","away":"SWE","homeScore":5,"awayScore":1,"played":true,"matchday":2},
+  {"id":"F4","group":"F","home":"TUN","away":"JPN","homeScore":0,"awayScore":4,"played":true,"matchday":2},
   // 第3轮 - 6月25日
   {"id":"F5","group":"F","home":"JPN","away":"SWE","homeScore":null,"awayScore":null,"played":false,"matchday":3},
   {"id":"F6","group":"F","home":"TUN","away":"NED","homeScore":null,"awayScore":null,"played":false,"matchday":3},
