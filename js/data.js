@@ -1,7 +1,7 @@
 /**
  * 内嵌数据层 - 2026世界杯 48支球队 + 72场比赛 + 实际赛果
  * 数据来源：FIFA官方抽签结果（2025年12月）+ 实际比赛结果
- * 最后更新：2026-06-21
+ * 最后更新：2026-06-22
  */
 
 const EMBEDDED_TEAMS = [
@@ -139,8 +139,8 @@ const EMBEDDED_MATCHES = [
   {"id":"G1","group":"G","home":"BEL","away":"EGY","homeScore":1,"awayScore":1,"played":true,"matchday":1},
   {"id":"G2","group":"G","home":"IRN","away":"NZL","homeScore":2,"awayScore":2,"played":true,"matchday":1},
   // 第2轮 - 6月21日
-  {"id":"G3","group":"G","home":"BEL","away":"IRN","homeScore":null,"awayScore":null,"played":false,"matchday":2},
-  {"id":"G4","group":"G","home":"NZL","away":"EGY","homeScore":null,"awayScore":null,"played":false,"matchday":2},
+  {"id":"G3","group":"G","home":"BEL","away":"IRN","homeScore":0,"awayScore":0,"played":true,"matchday":2},
+  {"id":"G4","group":"G","home":"NZL","away":"EGY","homeScore":1,"awayScore":3,"played":true,"matchday":2},
   // 第3轮 - 6月26日
   {"id":"G5","group":"G","home":"EGY","away":"IRN","homeScore":null,"awayScore":null,"played":false,"matchday":3},
   {"id":"G6","group":"G","home":"NZL","away":"BEL","homeScore":null,"awayScore":null,"played":false,"matchday":3},
@@ -150,8 +150,8 @@ const EMBEDDED_MATCHES = [
   {"id":"H1","group":"H","home":"ESP","away":"CPV","homeScore":0,"awayScore":0,"played":true,"matchday":1},
   {"id":"H2","group":"H","home":"KSA","away":"URU","homeScore":1,"awayScore":1,"played":true,"matchday":1},
   // 第2轮 - 6月21日
-  {"id":"H3","group":"H","home":"ESP","away":"KSA","homeScore":null,"awayScore":null,"played":false,"matchday":2},
-  {"id":"H4","group":"H","home":"URU","away":"CPV","homeScore":null,"awayScore":null,"played":false,"matchday":2},
+  {"id":"H3","group":"H","home":"ESP","away":"KSA","homeScore":4,"awayScore":0,"played":true,"matchday":2},
+  {"id":"H4","group":"H","home":"URU","away":"CPV","homeScore":2,"awayScore":2,"played":true,"matchday":2},
   // 第3轮 - 6月26日
   {"id":"H5","group":"H","home":"CPV","away":"KSA","homeScore":null,"awayScore":null,"played":false,"matchday":3},
   {"id":"H6","group":"H","home":"URU","away":"ESP","homeScore":null,"awayScore":null,"played":false,"matchday":3},
