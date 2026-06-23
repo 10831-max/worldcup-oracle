@@ -1,7 +1,7 @@
 /**
  * 内嵌数据层 - 2026世界杯 48支球队 + 72场比赛 + 实际赛果
  * 数据来源：FIFA官方抽签结果（2025年12月）+ 实际比赛结果
- * 最后更新：2026-06-22
+ * 最后更新：2026-06-23
  */
 
 const EMBEDDED_TEAMS = [
@@ -161,8 +161,8 @@ const EMBEDDED_MATCHES = [
   {"id":"I1","group":"I","home":"FRA","away":"SEN","homeScore":3,"awayScore":1,"played":true,"matchday":1},
   {"id":"I2","group":"I","home":"IRQ","away":"NOR","homeScore":1,"awayScore":4,"played":true,"matchday":1},
   // 第2轮 - 6月22日
-  {"id":"I3","group":"I","home":"FRA","away":"IRQ","homeScore":null,"awayScore":null,"played":false,"matchday":2},
-  {"id":"I4","group":"I","home":"NOR","away":"SEN","homeScore":null,"awayScore":null,"played":false,"matchday":2},
+  {"id":"I3","group":"I","home":"FRA","away":"IRQ","homeScore":4,"awayScore":0,"played":true,"matchday":2},
+  {"id":"I4","group":"I","home":"NOR","away":"SEN","homeScore":2,"awayScore":1,"played":true,"matchday":2},
   // 第3轮 - 6月26日
   {"id":"I5","group":"I","home":"NOR","away":"FRA","homeScore":null,"awayScore":null,"played":false,"matchday":3},
   {"id":"I6","group":"I","home":"SEN","away":"IRQ","homeScore":null,"awayScore":null,"played":false,"matchday":3},
@@ -172,8 +172,8 @@ const EMBEDDED_MATCHES = [
   {"id":"J1","group":"J","home":"ARG","away":"ALG","homeScore":3,"awayScore":0,"played":true,"matchday":1},
   {"id":"J2","group":"J","home":"AUT","away":"JOR","homeScore":3,"awayScore":1,"played":true,"matchday":1},
   // 第2轮 - 6月22日
-  {"id":"J3","group":"J","home":"ARG","away":"AUT","homeScore":null,"awayScore":null,"played":false,"matchday":2},
-  {"id":"J4","group":"J","home":"JOR","away":"ALG","homeScore":null,"awayScore":null,"played":false,"matchday":2},
+  {"id":"J3","group":"J","home":"ARG","away":"AUT","homeScore":2,"awayScore":0,"played":true,"matchday":2},
+  {"id":"J4","group":"J","home":"JOR","away":"ALG","homeScore":1,"awayScore":2,"played":true,"matchday":2},
   // 第3轮 - 6月27日
   {"id":"J5","group":"J","home":"ALG","away":"AUT","homeScore":null,"awayScore":null,"played":false,"matchday":3},
   {"id":"J6","group":"J","home":"JOR","away":"ARG","homeScore":null,"awayScore":null,"played":false,"matchday":3},
@@ -183,8 +183,8 @@ const EMBEDDED_MATCHES = [
   {"id":"K1","group":"K","home":"POR","away":"COD","homeScore":1,"awayScore":1,"played":true,"matchday":1},
   {"id":"K2","group":"K","home":"UZB","away":"COL","homeScore":1,"awayScore":3,"played":true,"matchday":1},
   // 第2轮 - 6月23日
-  {"id":"K3","group":"K","home":"POR","away":"UZB","homeScore":null,"awayScore":null,"played":false,"matchday":2},
-  {"id":"K4","group":"K","home":"COL","away":"COD","homeScore":null,"awayScore":null,"played":false,"matchday":2},
+  {"id":"K3","group":"K","home":"POR","away":"UZB","homeScore":3,"awayScore":0,"played":true,"matchday":2},
+  {"id":"K4","group":"K","home":"COL","away":"COD","homeScore":2,"awayScore":0,"played":true,"matchday":2},
   // 第3轮 - 6月27日
   {"id":"K5","group":"K","home":"COL","away":"POR","homeScore":null,"awayScore":null,"played":false,"matchday":3},
   {"id":"K6","group":"K","home":"COD","away":"UZB","homeScore":null,"awayScore":null,"played":false,"matchday":3},
@@ -194,8 +194,8 @@ const EMBEDDED_MATCHES = [
   {"id":"L1","group":"L","home":"ENG","away":"CRO","homeScore":4,"awayScore":2,"played":true,"matchday":1},
   {"id":"L2","group":"L","home":"GHA","away":"PAN","homeScore":1,"awayScore":0,"played":true,"matchday":1},
   // 第2轮 - 6月23日
-  {"id":"L3","group":"L","home":"ENG","away":"GHA","homeScore":null,"awayScore":null,"played":false,"matchday":2},
-  {"id":"L4","group":"L","home":"PAN","away":"CRO","homeScore":null,"awayScore":null,"played":false,"matchday":2},
+  {"id":"L3","group":"L","home":"ENG","away":"GHA","homeScore":3,"awayScore":1,"played":true,"matchday":2},
+  {"id":"L4","group":"L","home":"PAN","away":"CRO","homeScore":0,"awayScore":2,"played":true,"matchday":2},
   // 第3轮 - 6月27日
   {"id":"L5","group":"L","home":"PAN","away":"ENG","homeScore":null,"awayScore":null,"played":false,"matchday":3},
   {"id":"L6","group":"L","home":"CRO","away":"GHA","homeScore":null,"awayScore":null,"played":false,"matchday":3}
